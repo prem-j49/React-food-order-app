@@ -4,6 +4,7 @@ import Header from "./components/Layout/Header";
 import Meals from "./components/Meals/Meals";
 import Cart from "./components/Cart/Cart";
 import AuthContext from "./store/Auth-contex";
+import CartProvider from "./store/CartProvider";
 
 function App() {
 
@@ -11,24 +12,24 @@ function App() {
   const [cartIsShown, setCartIsShown] = useState(false);
 
   const showCartHandler = () => {
-      setCartIsShown(true);
+    setCartIsShown(true);
   }
 
   const hideCartHandler = () => {
-      setCartIsShown(false);
+    setCartIsShown(false);
   }
 
 
   return (
-    <React.Fragment>
+    <CartProvider>
       {cartIsShown && <Cart onClose={hideCartHandler} />}
       {/* {ctx.cartIsShown && <Cart />} */}
       {/* <Header /> */}
-      <Header onShownCart={showCartHandler}/>
+      <Header onShownCart={showCartHandler} />
       <main>
         <Meals />
       </main>
-    </React.Fragment>
+    </CartProvider>
   );
 }
 

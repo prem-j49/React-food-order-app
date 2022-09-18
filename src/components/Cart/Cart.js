@@ -1,17 +1,35 @@
+import { useContext } from "react";
 
 import Modal from "../UI/Modal";
+import CartContext from "../../store/Cart-context";
+import CartItem from "./CartItem";
+
 import calsses from "./Cart.module.css";
 
 const Cart = (props) => {
 
+    const cartCtx = useContext(CartContext);
+
+    const totalAmount = `$${cartCtx.totalAmount.toFixed(2)}`;
+    const hasItems = cartCtx.items.length > 0;
+
+    const cartItemRemoveHandler = (id) => {
+
+    }
+    const cartItemAddHandler = (item) => { }
+
     const cartItems =
         <ul className={calsses['cart-items']}> {
-            [{
-                id: 'c1',
-                name: 'sushi',
-                amount: 2,
-                price: 12.99
-            }].map(item => <li key={item.id}>{item.name}</li>)
+            cartCtx.items.map(item => 
+                <CartItem
+                    key={item.id}
+                    name={item.name}
+                    amount={item.amount}
+                    price={item.price}
+                    onRemove={cartItemRemoveHandler.bind(null, item.id)}
+                    onAdd={cartItemAddHandler.bind(null, item)}
+                />
+            )
         }
         </ul>
 
@@ -20,7 +38,7 @@ const Cart = (props) => {
             {cartItems}
             <div className={calsses.total}>
                 <span>Total Amount</span>
-                <span>35.32</span>
+                <span>{totalAmount}</span>
             </div>
             <div className={calsses.actions}>
                 <button
@@ -29,9 +47,10 @@ const Cart = (props) => {
                 >
                     Close
                 </button>
-                <button className={calsses.button} >Order</button>
+                {hasItems && < button className={calsses.button} >Order</button>}
+
             </div>
-        </Modal>
+        </Modal >
     );
 }
 export default Cart;
